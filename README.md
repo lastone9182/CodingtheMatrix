@@ -1,6 +1,6 @@
 # Coding the Matrix
 
-* Forked resource from [HERE](resources.codingthematrix.com)
+* Forked resource from [HERE](//resources.codingthematrix.com)
 
 #### Prerequisite
 
@@ -23,6 +23,8 @@ C:\...\chap1_the_function> python
 - - -
 
 > in Linux: Modify Environment Variables in your console or ~/.bash_profile or ~/.bashrc
+
+- - -
 
 ```
 chap1_the_function$ export PYTHONSTARTUP=__init__.py

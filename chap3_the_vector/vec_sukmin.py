@@ -1,4 +1,5 @@
 # Copyright 2013 Philip N. Klein
+import copy
 
 def getitem(v,k):
     """
@@ -12,7 +13,11 @@ def getitem(v,k):
     0
     """
     assert k in v.D
-    return v.f[k] if k in v.f else 0
+    if k in v.f:
+        return v.f[k]
+    else:
+        return 0
+    pass
 
 def setitem(v,k,val):
     """
@@ -33,6 +38,7 @@ def setitem(v,k,val):
     """
     assert k in v.D
     v.f[k] = val
+    pass
 
 def equal(u,v):
     """
@@ -42,11 +48,11 @@ def equal(u,v):
     Consider using brackets notation u[...] and v[...] in your procedure
     to access entries of the input vectors.  This avoids some sparsity bugs.
 
-    >>> Vec({'a', 'b', 'c'}, {'a':0}) == Vec({'a', 'b', 'c'}, {'b':0})
+    >>> Vec(['a', 'b', 'c'], {'a':0}) == Vec(['a', 'b', 'c'], {'b':0})
     True
-    >>> Vec({'a', 'b', 'c'}, {'a': 0}) == Vec({'a', 'b', 'c'}, {})
+    >>> Vec(['a', 'b', 'c'], {'a': 0}) == Vec(['a', 'b', 'c'], {})
     True
-    >>> Vec({'a', 'b', 'c'}, {}) == Vec({'a', 'b', 'c'}, {'a': 0})
+    >>> Vec(['a', 'b', 'c'], {}) == Vec(['a', 'b', 'c'], {'a': 0})
     True
 
     Be sure that equal(u, v) checks equalities for all keys from u.f and v.f even if
@@ -68,12 +74,23 @@ def equal(u,v):
     False
     """
     assert u.D == v.D
-    return False if False in {u[x] == v[x] for x in u.D} else True
+    isZeroVec = True;
+    for key in u.f: 
+        if u.f[key] != 0: 
+            isZeroVec = False 
+            break
+    for key in v.f: 
+        if v.f[key] != 0: 
+            isZeroVec = False 
+            break
+    
+    if isZeroVec: return True
+    else : return u.f == v.f
 
 def add(u,v):
     """
     Returns the sum of the two vectors.
-
+    
     Consider using brackets notation u[...] and v[...] in your procedure
     to access entries of the input vectors.  This avoids some sparsity bugs.
 
@@ -105,7 +122,22 @@ def add(u,v):
     True
     """
     assert u.D == v.D
-    return Vec(u.D, {d:u[d]+v[d] for d in u.D})
+    # check Zero Vector
+    if u.f == {} : 
+        return v
+    if v.f == {} :
+        return u
+    returnVec = Vec( copy.deepcopy(u.D) , copy.deepcopy(u.f) )
+
+    for key in v.f:
+        if key in returnVec.f : returnVec.f[key] = returnVec.f[key] + v.f[key]
+        else : returnVec.f[key] = v.f[key]
+        pass
+    pass
+
+    return returnVec
+
+
 
 def dot(u,v):
     """
@@ -139,7 +171,18 @@ def dot(u,v):
     12
     """
     assert u.D == v.D
-    return sum([u[i]*v[i] for i in u.f.keys()])
+    mulVec = 0
+    for key in u.D:
+        temp1 = u.f.get(key)
+        temp2 = v.f.get(key)
+        if temp1 == None: 
+            temp1 = 0
+        if temp2 == None:
+            temp2 = 0
+        mulVec += temp1 * temp2
+
+    return mulVec
+
 
 def scalar_mul(v, alpha):
     """
@@ -159,7 +202,15 @@ def scalar_mul(v, alpha):
     >>> u == Vec({'x','y','z','w'},{'x':1,'y':2,'z':3,'w':4})
     True
     """
-    return Vec(v.D, {d:alpha*value for (d,value) in v.f.items()})
+    zero = Vec( v.D , {})
+    returnVec = Vec( copy.deepcopy(v.D) , copy.deepcopy(v.f) )
+    if alpha == 0: return zero
+    elif alpha == 1: return returnVec
+    else : 
+        for key in returnVec.f : 
+            returnVec.f[key] = returnVec.f[key] * alpha
+    return returnVec
+
 
 def neg(v):
     """
@@ -176,7 +227,11 @@ def neg(v):
     >>> -Vec({'a','b','c'}, {'a':1}) == Vec({'a','b','c'}, {'a':-1})
     True
     """
-    return scalar_mul(v,-1)
+    returnVec = Vec( copy.deepcopy(v.D) , copy.deepcopy(v.f) )
+    for key in returnVec.f : 
+        returnVec.f[key] = - returnVec.f[key]
+    return returnVec
+
 
 ###############################################################################################################################
 

@@ -39,7 +39,7 @@ def equal(A, B):
     True
     """
     assert A.D == B.D
-    return False if False in {A[x] == B[x] for x in {(i,j) for i in A.D[0] for j in A.D[1]}} else True
+    pass
 
 def setitem(M, k, val):
     """
@@ -59,8 +59,7 @@ def setitem(M, k, val):
     True
     """
     assert k[0] in M.D[0] and k[1] in M.D[1]
-    "M[k[0],k[1]] = val is error occured. Why?"
-    M.f[k[0],k[1]] = val
+    pass
 
 def add(A, B):
     """
@@ -88,7 +87,7 @@ def add(A, B):
     True
     """
     assert A.D == B.D
-    return Mat(A.D,{d:A[d]+B[d] for d in {(i,j) for i in A.D[0] for j in A.D[1]}})
+    pass
 
 def scalar_mul(M, x):
     """
@@ -102,7 +101,7 @@ def scalar_mul(M, x):
     >>> 0.25*M == Mat(({1,3,5}, {2,4}), {(1,2):1.0, (5,4):0.5, (3,4):0.75})
     True
     """
-    return Mat(M.D,{d:M[d]*x for d in {(i,j) for i in M.D[0] for j in M.D[1]}})
+    pass
 
 def transpose(M):
     """
@@ -116,7 +115,7 @@ def transpose(M):
     >>> M.transpose() == Mt
     True
     """
-    return Mat((M.D[1],M.D[0]),{(j,i):d for (i,j),d in M.f.items()})
+    pass
 
 def vector_matrix_mul(v, M):
     """
