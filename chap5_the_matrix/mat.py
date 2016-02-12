@@ -1,4 +1,5 @@
 # Copyright 2013 Philip N. Klein
+import copy
 from vec import Vec
 
 #Test your Mat class over R and also over GF(2).  The following tests use only R.
@@ -13,7 +14,11 @@ def getitem(M, k):
     0
     """
     assert k[0] in M.D[0] and k[1] in M.D[1]
+<<<<<<< HEAD
     return M.f[k[0], k[1]] if (k[0], k[1]) in M.f else 0
+=======
+    return M.f[k[0],k[1]]
+>>>>>>> upstream/master
 
 def equal(A, B):
     """
@@ -39,7 +44,22 @@ def equal(A, B):
     True
     """
     assert A.D == B.D
+<<<<<<< HEAD
     return False if False in {A[x] == B[x] for x in {(i,j) for i in A.D[0] for j in A.D[1]}} else True
+=======
+    isMatch = True
+    getA = 0
+    getB = 0
+    for a in A.D:
+        for b in B.D:
+            if A.f.get( (a,b) ) == None : getA = 0
+            else : getA = A.f.get( (a,b) )
+            if B.f.get( (a,b) ) == None : getB = 0
+            else : getB = B.f.get( (a,b) )
+            if getA != getB: 
+                isMatch = False
+                break; 
+>>>>>>> upstream/master
 
 def setitem(M, k, val):
     """
@@ -102,7 +122,17 @@ def scalar_mul(M, x):
     >>> 0.25*M == Mat(({1,3,5}, {2,4}), {(1,2):1.0, (5,4):0.5, (3,4):0.75})
     True
     """
+<<<<<<< HEAD
     return Mat(M.D,{d:M[d]*x for d in {(i,j) for i in M.D[0] for j in M.D[1]}})
+=======
+    cpM = copy.deepcopy(M)
+    if x == 0: 
+        return Mat(cpM.D, {})
+    if x == 1:
+        return cpM
+    cpm = Mat( cpM.D, { (q,p):r for (p,q),r in cpM.f.getitems() } )
+    return cpM
+>>>>>>> upstream/master
 
 def transpose(M):
     """
@@ -116,7 +146,14 @@ def transpose(M):
     >>> M.transpose() == Mt
     True
     """
+<<<<<<< HEAD
     return Mat((M.D[1],M.D[0]),{(j,i):d for (i,j),d in M.f.items()})
+=======
+    cpM = copy.deepcopy(M)
+
+    cpM = Mat( (cpM.D[1], cpM.D[0]), {(q,p):v for (p,q),v in cpM.F.items() } )
+    return cpM
+>>>>>>> upstream/master
 
 def vector_matrix_mul(v, M):
     """
